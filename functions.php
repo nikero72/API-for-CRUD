@@ -27,3 +27,47 @@
             echo json_encode($item);
         }
     }
+
+    function addItem($connect, $data) {
+        $title = $data['title'];
+        $description = $data['description'];
+        $price = $data['price'];
+        
+        mysqli_query($connect, "INSERT INTO `items` (`id`, `title`, `description`, `price`) VALUES (NULL, '$title', '$description', '$price')");
+
+        http_response_code(201);
+
+        $response = [
+            "status" => true,
+            "post_id" => mysqli_insert_id($connect)
+        ];
+        echo json_encode($response);
+    }
+
+    function updateItem($connect, $id, $data) {
+        $title = $data['title'];
+        $description = $data['description'];
+        $price = $data['price'];
+
+        mysqli_query($connect, "UPDATE `items` SET `title` = '$title', `description` = '$description', `price` = '$price' WHERE `items`.`id` = '$id'");
+
+        http_response_code(200);
+
+        $response = [
+            "status" => true,
+            "message" => "Item is updated"
+        ];
+        echo json_encode($response);
+    }
+
+    function deleteItem($connect, $id) {
+        mysqli_query($connect, "DELETE FROM `items` WHERE `items`.`id` = '$id'");
+
+        http_response_code(200);
+
+        $response = [
+            "status" => true,
+            "message" => "Item is deleted"
+        ];
+        echo json_encode($response);
+    }

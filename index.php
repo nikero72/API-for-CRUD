@@ -3,25 +3,21 @@
     require 'connect.php';
     require 'functions.php';
 
-    $q = $_GET['q'];
+    $method = $_SERVER['REQUEST_METHOD'];
 
-    if (str_contains($q, '/')) {
-        $params = explode('/', $q);
-
-        $type = $params[0];
-        $id = $params[1];
-    } else {
-        $type = $q;
-    }
-    
-
-    if ($type === 'items') {
-        if (isset($id)) {
-            getItem($connect, $id);
-        } else {
-            getItems($connect);
-        }
-    }
-
-    
-    
+    switch ($method) {
+        case "GET":
+            require_once 'methods/get.php';
+            break;
+        case "POST":
+            require_once 'methods/post.php';
+            break;
+        case "PATCH":
+            require_once 'methods/patch.php';
+            break;
+        case "DELETE":
+            require_once 'methods/delete.php';
+            break;
+        default:
+            break;
+    }        
